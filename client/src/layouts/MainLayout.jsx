@@ -9,7 +9,7 @@ const MainLayout = ({ children }) => {
   const shouldHideNav = hideNavPaths.includes(location.pathname);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       {!shouldHideNav && <Navigation />}
       <main className="flex-grow relative z-10">
         {children}
