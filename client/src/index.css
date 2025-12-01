@@ -1,0 +1,268 @@
+/* Medieval Treasure Hunt - Global Styles */
+
+/* Import Medieval Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=UnifrakturMaguntia&family=MedievalSharp&family=Pirata+One&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables */
+:root {
+    --shadow-soft: rgba(58, 38, 24, 0.2);
+    --shadow-medium: rgba(58, 38, 24, 0.4);
+    --shadow-hard: rgba(58, 38, 24, 0.6);
+    --glow-gold: rgba(212, 175, 55, 0.5);
+    --glow-torch: rgba(255, 140, 0, 0.4);
+}
+
+@layer base {
+    * {
+        @apply m-0 p-0 box-border;
+    }
+
+    body {
+        @apply font-cinzel bg-gradient-to-br from-parchment-medium via-parchment-light to-parchment-dark text-ink-black leading-relaxed overflow-x-hidden;
+        position: relative;
+    }
+
+    /* Parchment Texture Overlay */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(58, 38, 24, 0.03) 2px, rgba(58, 38, 24, 0.03) 4px),
+            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(58, 38, 24, 0.03) 2px, rgba(58, 38, 24, 0.03) 4px);
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.5;
+    }
+
+    h1,
+    h2,
+    h3 {
+        @apply font-medieval text-brown-dark tracking-wider;
+        text-shadow: 2px 2px 4px var(--shadow-soft);
+    }
+
+    h1 {
+        @apply text-6xl md:text-7xl lg:text-8xl leading-tight mb-4;
+    }
+
+    h2 {
+        @apply text-4xl md:text-5xl mb-6;
+    }
+
+    h3 {
+        @apply text-2xl md:text-3xl mb-4;
+    }
+
+    p {
+        @apply font-cinzel text-lg text-ink-brown mb-4;
+    }
+}
+
+@layer components {
+
+    /* Floating Particles */
+    .particle {
+        @apply absolute w-1 h-1 bg-gold-medium rounded-full pointer-events-none;
+        animation: float 6s infinite ease-in-out;
+    }
+
+    /* Decorative Line */
+    .decorative-line {
+        @apply w-64 md:w-80 h-1 mx-auto my-8 relative;
+        background: linear-gradient(90deg, transparent, theme('colors.gold.medium'), transparent);
+    }
+
+    .decorative-line::before,
+    .decorative-line::after {
+        content: '◆';
+        @apply absolute top-1/2 -translate-y-1/2 text-gold-medium text-xl;
+    }
+
+    .decorative-line::before {
+        left: -20px;
+    }
+
+    .decorative-line::after {
+        right: -20px;
+    }
+
+    /* Medieval Button */
+    .btn-medieval {
+        @apply font-medievalSharp px-8 py-4 text-xl border-3 border-gold-medium bg-gradient-to-br from-brown-dark to-brown-medium text-gold-light cursor-pointer relative overflow-hidden inline-block transition-all duration-300 uppercase tracking-wider;
+        box-shadow:
+            0 4px 15px var(--shadow-medium),
+            inset 0 0 20px rgba(212, 175, 55, 0.1);
+    }
+
+    .btn-medieval::before {
+        content: '';
+        @apply absolute top-1/2 left-1/2 w-0 h-0 rounded-full opacity-30;
+        background: radial-gradient(circle, theme('colors.gold.medium') 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-medieval:hover::before {
+        @apply w-80 h-80;
+    }
+
+    .btn-medieval:hover {
+        @apply -translate-y-1 scale-105 border-gold-light;
+        box-shadow:
+            0 8px 25px var(--shadow-hard),
+            0 0 30px var(--glow-gold);
+    }
+
+    .btn-medieval:active {
+        @apply -translate-y-0.5 scale-105;
+    }
+
+    /* Feature Card */
+    .feature-card {
+        @apply bg-gradient-to-br from-parchment-light to-parchment-medium p-10 border-2 border-gold-dark rounded-lg relative transition-all duration-300 overflow-hidden;
+        box-shadow:
+            0 8px 20px var(--shadow-soft),
+            inset 0 0 30px rgba(212, 175, 55, 0.1);
+    }
+
+    .feature-card::before {
+        content: '';
+        @apply absolute -top-0.5 -left-0.5 -right-0.5 -bottom-0.5 rounded-lg opacity-0 transition-opacity duration-300;
+        background: linear-gradient(45deg, theme('colors.gold.medium'), theme('colors.gold.light'), theme('colors.gold.medium'));
+        z-index: -1;
+    }
+
+    .feature-card:hover::before {
+        @apply opacity-100;
+    }
+
+    .feature-card:hover {
+        @apply -translate-y-3 rotate-1;
+        box-shadow:
+            0 15px 40px var(--shadow-medium),
+            0 0 40px var(--glow-gold);
+    }
+
+    .feature-icon {
+        @apply text-6xl mb-6 block;
+        filter: drop-shadow(2px 2px 4px var(--shadow-soft));
+        animation: bounce 2s infinite;
+    }
+
+    .feature-card:hover .feature-icon {
+        animation: spin 0.6s ease-in-out;
+    }
+
+    /* Navigation */
+    .nav-link {
+        @apply font-medievalSharp text-parchment-light no-underline text-lg relative transition-all duration-300 px-4 py-2;
+    }
+
+    .nav-link::before {
+        content: '⚔';
+        @apply absolute opacity-0 transition-all duration-300;
+        left: -10px;
+    }
+
+    .nav-link:hover {
+        @apply text-gold-light -translate-y-1;
+    }
+
+    .nav-link:hover::before {
+        @apply opacity-100;
+        left: -20px;
+    }
+
+    /* Story Content */
+    .story-content {
+        @apply bg-parchment-light p-16 border-3 border-brown-medium rounded-xl relative;
+        box-shadow:
+            0 10px 30px var(--shadow-medium),
+            inset 0 0 50px rgba(58, 38, 24, 0.05);
+    }
+
+    .story-content::before,
+    .story-content::after {
+        content: '🗡️';
+        @apply absolute text-4xl opacity-30;
+    }
+
+    .story-content::before {
+        @apply top-5 left-5;
+        transform: rotate(-45deg);
+    }
+
+    .story-content::after {
+        @apply bottom-5 right-5;
+        transform: rotate(135deg);
+    }
+}
+
+@layer utilities {
+    .text-shadow-medieval {
+        text-shadow: 2px 2px 4px var(--shadow-soft);
+    }
+
+    .text-shadow-gold {
+        text-shadow:
+            3px 3px 0 theme('colors.gold.dark'),
+            6px 6px 12px var(--shadow-medium);
+    }
+
+    .border-3 {
+        border-width: 3px;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .story-content {
+        @apply p-10;
+    }
+}
+
+/* Leaflet map styles */
+.leaflet-container {
+    font-family: 'Cinzel', serif;
+}
+
+.leaflet-popup-content-wrapper {
+    background: linear-gradient(to bottom right, #f4e8d0, #e8d7b8);
+    border: 2px solid #d4af37;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(58, 38, 24, 0.4);
+}
+
+.leaflet-popup-tip {
+    background: #f4e8d0;
+    border: 2px solid #d4af37;
+}
+
+.custom-marker {
+    animation: markerPulse 2s infinite;
+}
+
+@keyframes markerPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
