@@ -64,7 +64,7 @@ const Home = () => {
             <div className={`inline-flex items-center justify-center mb-8 transform transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="bg-white border border-treasure-gold/30 px-6 py-2 rounded-full shadow-sm flex items-center gap-2">
                 <Icons.Star className="w-4 h-4 text-treasure-gold" />
-                <span className="font-heading font-bold text-gray-700 text-sm tracking-wide">March 15, 2024 • 10:00 AM - 6:00 PM</span>
+                <span className="font-heading font-bold text-gray-700 text-sm tracking-wide">{eventDetails.date} • {eventDetails.time}</span>
               </div>
             </div>
 

@@ -47,83 +47,51 @@ export const eventDetails = {
 export const timeline = [
   {
     id: 1,
-    title: "Registration Opens",
-    time: "8:00 AM",
-    description: "Check-in at the main entrance. Collect your team kit and event map.",
-    icon: "scroll",
-    details: "Bring your registration confirmation and valid ID. Team leaders must check in all members."
+    title: "Start: Football Ground",
+    time: "January 15, 9:00 AM",
+    description: "Gather at the Football Ground for the opening briefing and team check-in.",
+    icon: "map",
+    details: "Collect your starter kit, meet your team, and receive the first encrypted clue."
   },
   {
     id: 2,
-    title: "Opening Ceremony",
-    time: "9:30 AM",
-    description: "Welcome address and event briefing by the organizers.",
+    title: "Checkpoint 1: KC Ground",
+    time: "January 15, 10:30 AM",
+    description: "Navigate to KC Ground for the first physical and logic challenge.",
     icon: "compass",
-    details: "Learn about the rules, checkpoints, and safety guidelines. Get your first clue!"
+    details: "Solve the riddle hidden in the field to unlock the coordinates for the next location."
   },
   {
     id: 3,
-    title: "Treasure Hunt Begins",
-    time: "10:00 AM",
-    description: "The adventure starts! Navigate to your first checkpoint.",
-    icon: "map",
-    details: "Use your map and clues to find checkpoints. Complete challenges to earn the next clue."
+    title: "Checkpoint 2: AB 10",
+    time: "January 15, 12:00 PM",
+    description: "Proceed to Academic Block 10 for a debugging showdown.",
+    icon: "scroll",
+    details: "Find the hidden QR codes in the lab and fix the bugged code snippets to proceed."
   },
   {
     id: 4,
-    title: "Checkpoint 1: Code Island",
-    time: "10:00 AM - 11:30 AM",
-    description: "Solve coding challenges to unlock the next location.",
-    icon: "scroll",
-    details: "Test your programming skills with algorithmic puzzles and debugging challenges."
+    title: "Checkpoint 3: CSED",
+    time: "January 15, 2:00 PM",
+    description: "Reach the Computer Science Department for algorithm optimization tasks.",
+    icon: "compass",
+    details: "Optimize the provided pathfinding algorithm to reveal the secret passkey."
   },
   {
     id: 5,
-    title: "Checkpoint 2: Database Bay",
-    time: "11:30 AM - 1:00 PM",
-    description: "Navigate through database queries and data structures.",
-    icon: "compass",
-    details: "Master SQL queries and optimize database operations to proceed."
+    title: "Checkpoint 4: AB 1",
+    time: "January 15, 3:30 PM",
+    description: "Head to Academic Block 1 for the system design challenge.",
+    icon: "scroll",
+    details: "Draft a scalable architecture for the pirate ship's communication system."
   },
   {
     id: 6,
-    title: "Lunch Break",
-    time: "1:00 PM - 2:00 PM",
-    description: "Refuel at the mess hall. Complimentary lunch for all participants.",
+    title: "Grand Finale: Chai Ki Tapri",
+    time: "January 15, 5:00 PM",
+    description: "Race to the finish line at Chai Ki Tapri for the final submission.",
     icon: "map",
-    details: "Enjoy a hearty meal and strategize with your team for the remaining challenges."
-  },
-  {
-    id: 7,
-    title: "Checkpoint 3: API Archipelago",
-    time: "2:00 PM - 3:30 PM",
-    description: "Build and integrate APIs to unlock secret passages.",
-    icon: "scroll",
-    details: "Create RESTful APIs and handle authentication to access hidden treasures."
-  },
-  {
-    id: 8,
-    title: "Checkpoint 4: Frontend Fortress",
-    time: "3:30 PM - 5:00 PM",
-    description: "Design and implement UI components to reveal the final clue.",
-    icon: "compass",
-    details: "Showcase your frontend skills with React, CSS, and responsive design."
-  },
-  {
-    id: 9,
-    title: "Final Challenge",
-    time: "5:00 PM - 5:45 PM",
-    description: "The ultimate test! Combine all your skills to claim the treasure.",
-    icon: "map",
-    details: "A comprehensive challenge that tests everything you've learned."
-  },
-  {
-    id: 10,
-    title: "Closing Ceremony",
-    time: "6:00 PM",
-    description: "Winner announcement and prize distribution.",
-    icon: "scroll",
-    details: "Celebrate with fellow pirates and collect your well-deserved rewards!"
+    details: "Submit your final treasure key, enjoy refreshments, and await the winner announcement!"
   }
 ];
 
