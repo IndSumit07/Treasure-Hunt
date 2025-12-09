@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icons from '../components/Icons';
+import showToast from '../utils/toast';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ const Register = () => {
     teammates: []
   });
 
-  const [showSuccess, setShowSuccess] = useState(false);
+  // Removed showSuccess state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,10 +47,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 3000);
+    showToast.success('Registration Successful! Check your email.');
     console.log('Registration:', formData);
   };
 
@@ -244,15 +242,7 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Success Message */}
-      {showSuccess && (
-        <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up">
-          <div className="paper-card px-8 py-4 shadow-gold flex items-center space-x-3 border-l-4 border-treasure-gold">
-            <Icons.CheckCircle className="w-6 h-6 text-treasure-gold" />
-            <span className="font-bold text-lg text-gray-900">Registration Successful! Check your email.</span>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

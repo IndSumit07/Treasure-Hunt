@@ -1,38 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icons from './Icons';
+import { useAuth } from '../context/AuthContext';
+import showToast from '../utils/toast';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = () => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        } else {
-            setUser(null);
-        }
-    };
-
-    checkAuth();
-
-    window.addEventListener('auth-change', checkAuth);
-    window.addEventListener('storage', checkAuth);
-
-    return () => {
-        window.removeEventListener('auth-change', checkAuth);
-        window.removeEventListener('storage', checkAuth);
-    };
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    window.dispatchEvent(new Event('auth-change'));
+  const handleLogout = async () => {
+    await signOut();
+    showToast.success('Successfully logged out. See you next time!');
     navigate('/');
   };
 
@@ -108,19 +89,44 @@ const Navbar = () => {
                   </Link>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <Link 
-                      to="/register" 
-                      className="hidden sm:inline-flex btn-primary items-center space-x-2 text-sm"
-                    >
-                      <Icons.Treasure className="w-4 h-4" />
-                      <span>Join the Hunt</span>
-                    </Link>
-                    <button 
-                        onClick={handleLogout}
-                        className="hidden sm:inline-block px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600 font-bold font-heading text-sm transition-all"
-                    >
-                        Logout
-                    </button>
+                    <div className="relative group">
+                      <button className="hidden sm:flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-treasure-gold to-treasure-bronze text-white font-bold text-lg shadow-lg hover:shadow-gold/50 transition-all duration-300">
+                        {user.user_metadata?.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || '?'}
+                      </button>
+                      
+                      {/* Dropdown Menu */}
+                      <div className="absolute right-0 top-full mt-4 w-56 py-2 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 z-50">
+                         {/* Triangle pointer */}
+                         <div className="absolute -top-2 right-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-100"></div>
+                         
+                         <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-xl">
+                           <div className="font-bold text-gray-900 truncate font-heading">{user.user_metadata?.full_name || 'Adventurer'}</div>
+                           <div className="text-xs text-gray-500 truncate">{user.email}</div>
+                         </div>
+
+                         <div className="p-2">
+                           <Link 
+                             to="/dashboard" 
+                             className="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-treasure-gold/10 hover:text-treasure-bronze transition-colors group/item"
+                           >
+                             <div className="p-1.5 rounded-md bg-gray-100 text-gray-500 group-hover/item:bg-treasure-gold/20 group-hover/item:text-treasure-bronze transition-colors">
+                               <Icons.User className="w-4 h-4" />
+                             </div>
+                             <span className="font-semibold">Profile</span>
+                           </Link>
+                           
+                           <button 
+                             onClick={handleLogout}
+                             className="w-full text-left flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm text-red-600 hover:bg-red-50 transition-colors group/item"
+                           >
+                              <div className="p-1.5 rounded-md bg-red-100/50 text-red-500 group-hover/item:bg-red-100 group-hover/item:text-red-600 transition-colors">
+                                <Icons.LogOut className="w-4 h-4" />
+                              </div>
+                             <span className="font-semibold">Logout</span>
+                           </button>
+                         </div>
+                      </div>
+                    </div>
                   </div>
                 )}
 

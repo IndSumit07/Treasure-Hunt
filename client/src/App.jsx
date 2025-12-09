@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -10,9 +11,13 @@ import Timeline from './pages/Timeline';
 import Map from './pages/Map';
 import Dashboard from './pages/Dashboard';
 
+import { AuthProvider } from './context/AuthContext';
+
 function App() {
   return (
-    <Router>
+    <AuthProvider>
+      <Toaster position="top-right" reverseOrder={false} />
+      <Router>
       <div className="App">
         <Navbar />
         <Routes>
@@ -27,6 +32,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </AuthProvider>
   );
 }
 

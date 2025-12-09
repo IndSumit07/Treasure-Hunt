@@ -183,6 +183,11 @@ export const Icons = {
       <path d="M3 3h8v8H3V3zm6 6V5H5v4h4zm-6 8h8v8H3v-8zm6 6v-4H5v4h4zm8-14h8v8h-8V3zm6 6V5h-4v4h4zM13 13h2v2h-2zM17 13h2v2h-2zM13 17h2v2h-2zM17 17h2v2h-2zM19 15h2v2h-2zM15 15h2v2h-2zM15 19h2v2h-2zM19 19h2v2h-2z"/>
     </svg>
   ),
+  LogOut: ({ className = "w-6 h-6", ...props }) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" {...props}>
+      <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+    </svg>
+  ),
 };
 
 export default Icons;
