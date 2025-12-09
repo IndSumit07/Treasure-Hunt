@@ -41,8 +41,7 @@ const Register = () => {
   };
 
   const calculatePrice = () => {
-    if (formData.teamSize === 1) return 299;
-    return formData.teamSize * 250;
+    return formData.teamSize * 49;
   };
 
   const handleSubmit = (e) => {
@@ -197,7 +196,7 @@ const Register = () => {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Price per person:</span>
-                  <span className="font-semibold text-gray-900">₹{formData.teamSize === 1 ? 299 : 250}</span>
+                  <span className="font-semibold text-gray-900">₹49</span>
                 </div>
                 
                 <div className="border-t border-treasure-gold/20 pt-3 mt-3">
@@ -206,14 +205,6 @@ const Register = () => {
                     <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-treasure-bronze to-treasure-gold font-heading">₹{calculatePrice()}</span>
                   </div>
                 </div>
-
-                {formData.teamSize > 1 && (
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-3 mt-3">
-                    <p className="text-sm text-green-700 font-semibold text-center">
-                      💰 Save ₹{(299 - 250) * formData.teamSize} with team registration!
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -236,7 +227,7 @@ const Register = () => {
           <div className="paper-card p-6 text-center">
             <Icons.Calendar className="w-10 h-10 text-treasure-bronze mx-auto mb-3" />
             <h3 className="font-bold mb-2 text-gray-900 font-heading">Event Date</h3>
-            <p className="text-gray-500 text-sm">March 15, 2024</p>
+            <p className="text-gray-500 text-sm">January 15, 2026</p>
           </div>
           
           <div className="paper-card p-6 text-center">

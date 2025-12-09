@@ -3,7 +3,7 @@
 export const eventDetails = {
   title: "Treasure Hunt",
   subtitle: "A Pirate's Quest for Tech Glory",
-  date: "March 15, 2024",
+  date: "January 15, 2026",
   time: "10:00 AM - 6:00 PM",
   location: "Tech Campus, Building A",
   description: `Ahoy, mateys! Welcome to the most thrilling tech treasure hunt of the year! 
@@ -130,55 +130,55 @@ export const timeline = [
 export const mapLocations = [
   {
     id: 1,
-    name: "Registration Deck",
+    name: "Football Ground",
     coordinates: { x: 20, y: 30 },
     type: "start",
-    hint: "Your journey begins here, brave sailor!",
-    description: "Check in and receive your adventure kit"
+    hint: "Your journey begins on the green field...",
+    description: "Registration and Initial Briefing"
   },
   {
     id: 2,
-    name: "Code Island",
+    name: "KC Ground",
     coordinates: { x: 35, y: 45 },
     type: "checkpoint",
-    hint: "Where algorithms meet the seven seas...",
-    description: "Solve coding challenges to proceed",
-    challenge: "Implement a binary search algorithm"
+    hint: "Look for the open space near the center...",
+    description: "First technical challenge awaits",
+    challenge: "Physical & Logic Puzzle Combo"
   },
   {
     id: 3,
-    name: "Database Bay",
+    name: "AB 10",
     coordinates: { x: 55, y: 35 },
     type: "checkpoint",
-    hint: "Data flows like ocean currents here...",
-    description: "Master database queries",
-    challenge: "Optimize a complex SQL query"
+    hint: "Academic Block 10 holds the next clue...",
+    description: "Debugging Challenge",
+    challenge: "Fix the broken code snippets"
   },
   {
     id: 4,
-    name: "API Archipelago",
+    name: "CSED",
     coordinates: { x: 70, y: 55 },
     type: "checkpoint",
-    hint: "Islands connected by invisible bridges...",
-    description: "Build and integrate APIs",
-    challenge: "Create a secure authentication endpoint"
+    hint: "The heart of computer science...",
+    description: "Algorithm Design",
+    challenge: "Optimize the sorting algorithm"
   },
   {
     id: 5,
-    name: "Frontend Fortress",
+    name: "AB 1",
     coordinates: { x: 50, y: 70 },
     type: "checkpoint",
-    hint: "Where beauty meets functionality...",
-    description: "Design stunning interfaces",
-    challenge: "Build a responsive component library"
+    hint: "Back to the beginning blocks...",
+    description: "System Design",
+    challenge: "Design a scalable architecture"
   },
   {
     id: 6,
-    name: "Treasure Cove",
+    name: "Chai Ki Tapri",
     coordinates: { x: 80, y: 80 },
     type: "finish",
-    hint: "X marks the spot! The treasure awaits...",
-    description: "Complete the final challenge to claim victory"
+    hint: "Celebrate with a warm cup!",
+    description: "Final submission and celebrations"
   }
 ];
 

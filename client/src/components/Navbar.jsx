@@ -1,16 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icons from './Icons';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Hide navbar on auth pages
-  const hideNavbar = ['/login', '/signup'].includes(location.pathname);
-  
-  if (hideNavbar) return null;
+  useEffect(() => {
+    const checkAuth = () => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            setUser(null);
+        }
+    };
+
+    checkAuth();
+
+    window.addEventListener('auth-change', checkAuth);
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+        window.removeEventListener('auth-change', checkAuth);
+        window.removeEventListener('storage', checkAuth);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    window.dispatchEvent(new Event('auth-change'));
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +44,11 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Hide navbar on auth pages
+  const hideNavbar = ['/login', '/signup'].includes(location.pathname);
+  
+  if (hideNavbar) return null;
 
   const navLinks = [
     { name: 'Home', path: '/', icon: <Icons.Ship className="w-4 h-4" /> },
@@ -69,21 +98,31 @@ const Navbar = () => {
                 ))}
               </div>
 
-              {/* Right side buttons */}
               <div className="flex items-center space-x-3">
-                <Link 
-                  to="/login" 
-                  className="hidden sm:inline-block px-5 py-2.5 rounded-xl font-heading font-bold text-gray-600 hover:text-treasure-bronze hover:bg-treasure-gold/10 transition-all duration-300"
-                >
-                  Login
-                </Link>
-                <Link 
-                  to="/register" 
-                  className="hidden sm:inline-flex btn-primary items-center space-x-2 text-sm"
-                >
-                  <span>Register Now</span>
-                  <Icons.ArrowRight className="w-4 h-4" />
-                </Link>
+                {!user ? (
+                  <Link 
+                    to="/login" 
+                    className="hidden sm:inline-block px-5 py-2.5 rounded-xl font-heading font-bold text-gray-600 hover:text-treasure-bronze hover:bg-treasure-gold/10 transition-all duration-300"
+                  >
+                    Login
+                  </Link>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <Link 
+                      to="/register" 
+                      className="hidden sm:inline-flex btn-primary items-center space-x-2 text-sm"
+                    >
+                      <Icons.Treasure className="w-4 h-4" />
+                      <span>Join the Hunt</span>
+                    </Link>
+                    <button 
+                        onClick={handleLogout}
+                        className="hidden sm:inline-block px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-600 font-bold font-heading text-sm transition-all"
+                    >
+                        Logout
+                    </button>
+                  </div>
+                )}
 
                 {/* Mobile Menu Button */}
                 <button
@@ -140,20 +179,35 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="pt-3 border-t border-gray-100 space-y-3">
-                <Link
-                  to="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="block px-5 py-3 rounded-xl font-heading font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300 text-center"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full btn-primary flex justify-center items-center"
-                >
-                  Register Now
-                </Link>
+                {!user ? (
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-5 py-3 rounded-xl font-heading font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300 text-center"
+                  >
+                    Login
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      to="/register"
+                      onClick={() => setIsOpen(false)}
+                      className="w-full btn-primary flex justify-center items-center space-x-2"
+                    >
+                      <Icons.Treasure className="w-5 h-5" />
+                      <span>Join the Hunt</span>
+                    </Link>
+                    <button
+                        onClick={() => {
+                            handleLogout();
+                            setIsOpen(false);
+                        }}
+                        className="w-full px-5 py-3 rounded-xl font-heading font-bold text-gray-600 hover:bg-gray-50 transition-all duration-300 text-center"
+                    >
+                        Logout
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

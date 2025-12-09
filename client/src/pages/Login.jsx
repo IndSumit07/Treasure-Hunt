@@ -17,7 +17,15 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login attempt with:', formData);
+    // Simulate login - in a real app this would verify credentials
+    const user = { email: formData.email, name: 'Captain' };
+    localStorage.setItem('user', JSON.stringify(user));
+    
+    // Custom event to notify components of auth change
+    window.dispatchEvent(new Event('auth-change'));
+    
+    // Redirect to home
+    window.location.href = '/';
   };
 
   return (

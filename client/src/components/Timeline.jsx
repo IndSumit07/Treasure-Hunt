@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Calendar,
   Clock,
@@ -12,6 +12,7 @@ import {
 import DecorativeLine from "./DecorativeLine";
 
 const Timeline = () => {
+  const [isVisible, setIsVisible] = useState(false);
   const timelineRef = useRef(null);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const Timeline = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("animate-reveal");
+            setIsVisible(true);
           }
         });
       },
@@ -70,32 +72,46 @@ const Timeline = () => {
 
   const eventPhases = [
     {
-      phase: "Registration Opens",
-      date: "December 5, 2025",
-      time: "10:00 AM",
-      icon: Calendar,
-      description: "Early bird registration with special discounts",
-    },
-    {
-      phase: "Quest Begins",
-      date: "December 15, 2025",
+      phase: "Start: Football Ground",
+      date: "January 15, 2026",
       time: "9:00 AM",
-      icon: Zap,
-      description: "The great treasure hunt officially starts",
+      icon: Users,
+      description: "Gather for briefing and team allocation",
     },
     {
-      phase: "Mid-Quest Checkpoint",
-      date: "December 20, 2025",
+      phase: "CP 1: KC Ground",
+      date: "January 15, 2026",
+      time: "10:30 AM",
+      icon: Map,
+      description: "Physical & Logic challenges await",
+    },
+    {
+      phase: "CP 2: AB 10",
+      date: "January 15, 2026",
       time: "12:00 PM",
-      icon: Star,
-      description: "Bonus challenges and surprise rewards unlocked",
+      icon: Zap,
+      description: "Debug the broken code snippets",
     },
     {
-      phase: "Final Showdown",
-      date: "December 25, 2025",
-      time: "6:00 PM",
+      phase: "CP 3: CSED",
+      date: "January 15, 2026",
+      time: "2:00 PM",
       icon: Crown,
-      description: "Grand finale with legendary treasure reveal",
+      description: "Algorithm optimization tasks",
+    },
+    {
+      phase: "CP 4: AB 1",
+      date: "January 15, 2026",
+      time: "3:30 PM",
+      icon: Star,
+      description: "System design & architecture",
+    },
+    {
+      phase: "Finale: Chai Ki Tapri",
+      date: "January 15, 2026",
+      time: "5:00 PM",
+      icon: Sparkles,
+      description: "Celebration & Prize Distribution",
     },
   ];
 
@@ -135,20 +151,47 @@ const Timeline = () => {
           <h3 className="text-4xl text-center mb-12 text-brown-dark">
             Quest Timeline
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventPhases.map((phase, index) => {
               const Icon = phase.icon;
               return (
                 <div
                   key={index}
-                  className="timeline-card bg-gradient-to-br from-parchment-light to-parchment-medium p-6 rounded-lg border-2 border-gold-dark relative overflow-hidden group hover:scale-105 transition-all duration-300 animate-fade-in-up"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  className="timeline-card bg-gradient-to-br from-parchment-light to-parchment-medium p-6 rounded-lg border-2 border-gold-dark relative group hover:scale-105 transition-all duration-300 animate-fade-in-up flex flex-col items-center z-10 !overflow-visible"
+                  style={{ animationDelay: `${index * 0.2}s` }}
                 >
                   {/* Shimmer Effect */}
-                  <div className="absolute inset-0 bg-shimmer-gradient bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity"></div>
+                  <div className="absolute inset-0 bg-shimmer-gradient bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer transition-opacity rounded-lg pointer-events-none"></div>
 
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-gold-medium to-gold-dark rounded-full mb-4 mx-auto shadow-gold-glow">
+                  {/* Connecting Lines */}
+                  {index < eventPhases.length - 1 && (
+                    <>
+                      {/* Desktop Horizontal Line */}
+                      <div className="hidden lg:block absolute top-1/2 -right-6 w-12 h-1 bg-gray-400 z-20 transform -translate-y-1/2">
+                        <div 
+                          className={`h-full bg-gradient-to-r from-treasure-gold to-treasure-bronze shadow-[0_0_10px_rgba(212,175,55,0.8)] transition-all duration-1000 ease-out`}
+                          style={{ 
+                            width: isVisible ? '100%' : '0%',
+                            transitionDelay: `${(index * 0.2) + 0.5}s`
+                          }}
+                        />
+                      </div>
+
+                      {/* Mobile Vertical Line */}
+                      <div className="lg:hidden absolute -bottom-6 left-1/2 w-1 h-12 bg-gray-400 z-20 transform -translate-x-1/2">
+                         <div 
+                          className={`w-full bg-gradient-to-b from-treasure-gold to-treasure-bronze shadow-[0_0_10px_rgba(212,175,55,0.8)] transition-all duration-1000 ease-out`}
+                          style={{ 
+                            height: isVisible ? '100%' : '0%',
+                            transitionDelay: `${(index * 0.2) + 0.5}s`
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  <div className="relative z-10 flex flex-col items-center w-full">
+                    <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-gold-medium to-gold-dark rounded-full mb-4 shadow-gold-glow">
                       <Icon className="text-parchment-light" size={28} />
                     </div>
                     <h4 className="text-xl font-medieval text-brown-dark text-center mb-2">
