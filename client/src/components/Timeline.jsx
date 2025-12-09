@@ -110,7 +110,7 @@ const Timeline = () => {
     >
       {/* Mystical Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-mystical-purple rounded-full opacity-10 blur-3xl animate-pulse"></div>
+        <div className="absolute top-22 left-10 w-32 h-32 bg-mystical-purple rounded-full opacity-10 blur-3xl animate-pulse"></div>
         <div
           className="absolute bottom-20 right-10 w-40 h-40 bg-gold-medium rounded-full opacity-10 blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}

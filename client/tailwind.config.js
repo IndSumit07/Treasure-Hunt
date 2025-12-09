@@ -7,116 +7,87 @@ export default {
   theme: {
     extend: {
       colors: {
-        parchment: {
-          light: '#f4e8d0',
-          medium: '#e8d7b8',
-          dark: '#d4c4a0',
+        page: {
+          light: '#fdfbf7', // Ultra light parchment
+          DEFAULT: '#f4f1ea', // Light parchment
+          dark: '#e6e2d6', // Darker parchment for contrast
         },
-        gold: {
-          light: '#ffd700',
-          medium: '#d4af37',
-          dark: '#b8860b',
-          antique: '#c9a961',
+        paper: {
+          DEFAULT: '#ffffff',
+          hover: '#fcfbf9',
         },
-        brown: {
-          dark: '#3a2618',
-          medium: '#5c4033',
-          light: '#8b4513',
+        primary: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7', // Ocean Blue
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
         },
-        burgundy: '#6b1f1f',
-        ink: {
-          black: '#1a1410',
-          brown: '#3d2817',
+        treasure: {
+          gold: '#d4af37', // Classic Gold
+          amber: '#f59e0b', // Bright Amber
+          bronze: '#b45309', // Aged Bronze
         },
-        mystical: {
-          purple: '#8b5cf6',
-          blue: '#3b82f6',
-          cyan: '#06b6d4',
+        jungle: {
+          light: '#34d399',
+          medium: '#10b981',
+          deep: '#065f46',
         },
+        map: {
+          sepia: '#705c3e', // Ink color
+          grid: '#e5e0d1', // Grid lines
+        }
       },
       fontFamily: {
-        medieval: ['UnifrakturMaguntia', 'cursive'],
-        cinzel: ['Cinzel', 'serif'],
-        medievalSharp: ['MedievalSharp', 'cursive'],
-        pirata: ['Pirata One', 'cursive'],
+        heading: ['Cinzel', 'serif'],
+        body: ['Space Grotesk', 'sans-serif'],
+        script: ['Pirata One', 'cursive'],
       },
       animation: {
         'float': 'float 6s infinite ease-in-out',
-        'torch-glow': 'torchGlow 4s infinite alternate',
-        'fade-in-down': 'fadeInDown 1s ease-out',
-        'fade-in': 'fadeIn 1.5s ease-out',
-        'fade-in-up': 'fadeInUp 1s ease-out',
-        'bounce-slow': 'bounce 2s infinite',
-        'spin-once': 'spin 0.6s ease-in-out',
-        'shimmer': 'shimmer 2s infinite',
-        'mystical-glow': 'mysticalGlow 3s infinite alternate',
-        'sparkle': 'sparkle 1.5s infinite',
-        'reveal': 'reveal 0.8s ease-out forwards',
-        'slide-in-left': 'slideInLeft 0.6s ease-out',
-        'slide-in-right': 'slideInRight 0.6s ease-out',
-        'pulse-glow': 'pulseGlow 2s infinite',
+        'fade-in': 'fadeIn 1s ease-out',
+        'slide-up': 'slideUp 0.8s ease-out',
+        'shine': 'shine 3s infinite',
+        'pulse-gold': 'pulseGold 2s infinite',
       },
       keyframes: {
         float: {
-          '0%, 100%': { transform: 'translateY(0) translateX(0)', opacity: '0.3' },
-          '50%': { transform: 'translateY(-20px) translateX(10px)', opacity: '0.6' },
-        },
-        torchGlow: {
-          '0%': { opacity: '0.3' },
-          '100%': { opacity: '0.6' },
-        },
-        fadeInDown: {
-          from: { opacity: '0', transform: 'translateY(-30px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-15px)' },
         },
         fadeIn: {
           from: { opacity: '0' },
           to: { opacity: '1' },
         },
-        fadeInUp: {
-          from: { opacity: '0', transform: 'translateY(30px)' },
+        slideUp: {
+          from: { opacity: '0', transform: 'translateY(20px)' },
           to: { opacity: '1', transform: 'translateY(0)' },
         },
-        shimmer: {
-          '0%': { backgroundPosition: '-200% center' },
-          '100%': { backgroundPosition: '200% center' },
+        shine: {
+          '0%': { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '-200% center' },
         },
-        mysticalGlow: {
-          '0%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1)' },
-          '100%': { boxShadow: '0 0 40px rgba(139, 92, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.3)' },
-        },
-        sparkle: {
-          '0%, 100%': { opacity: '0', transform: 'scale(0)' },
-          '50%': { opacity: '1', transform: 'scale(1)' },
-        },
-        reveal: {
-          from: { opacity: '0', transform: 'scale(0.9)' },
-          to: { opacity: '1', transform: 'scale(1)' },
-        },
-        slideInLeft: {
-          from: { opacity: '0', transform: 'translateX(-50px)' },
-          to: { opacity: '1', transform: 'translateX(0)' },
-        },
-        slideInRight: {
-          from: { opacity: '0', transform: 'translateX(50px)' },
-          to: { opacity: '1', transform: 'translateX(0)' },
-        },
-        pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(212, 175, 55, 0.4)' },
-          '50%': { boxShadow: '0 0 40px rgba(212, 175, 55, 0.8), 0 0 60px rgba(212, 175, 55, 0.4)' },
+        pulseGold: {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(212, 175, 55, 0.4)' },
+          '70%': { boxShadow: '0 0 0 15px rgba(212, 175, 55, 0)' },
         },
       },
       boxShadow: {
-        'medieval': '0 4px 15px rgba(58, 38, 24, 0.4)',
-        'medieval-lg': '0 8px 25px rgba(58, 38, 24, 0.6)',
-        'gold-glow': '0 0 30px rgba(212, 175, 55, 0.5)',
-        'mystical': '0 0 30px rgba(139, 92, 246, 0.5)',
-        'mystical-lg': '0 0 50px rgba(139, 92, 246, 0.7)',
+        'soft': '0 4px 20px -2px rgba(112, 92, 62, 0.1)',
+        'card': '0 10px 30px -5px rgba(112, 92, 62, 0.15)',
+        'floating': '0 20px 40px -5px rgba(112, 92, 62, 0.2)',
+        'inner-map': 'inset 0 0 30px rgba(112, 92, 62, 0.1)',
+        'gold': '0 4px 14px 0 rgba(212, 175, 55, 0.39)',
       },
       backgroundImage: {
-        'shimmer-gradient': 'linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent)',
-        'mystical-gradient': 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))',
-      },
+        'parchment-texture': "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+        'dots-pattern': "radial-gradient(#e5e0d1 1px, transparent 1px)",
+      }
     },
   },
   plugins: [],

@@ -1,248 +1,267 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, Mail, Lock, User, Eye, EyeOff, Sparkles, Shield } from 'lucide-react';
-import DecorativeLine from '../components/DecorativeLine';
+import Icons from '../components/Icons';
 
 const Register = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    agreeToTerms: false,
+    teamName: '',
+    teamLeaderName: '',
+    teamLeaderEmail: '',
+    teamSize: 1,
+    teammates: []
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle registration logic here
-    console.log('Registration attempt:', formData);
-  };
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e) => {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: value,
+      [name]: value
     });
   };
 
-  const getPasswordStrength = (password) => {
-    if (!password) return { strength: 0, label: '', color: '' };
-    
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-    if (/\d/.test(password)) strength++;
-    if (/[^a-zA-Z\d]/.test(password)) strength++;
-
-    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
-    const colors = ['bg-red-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
-    
-    return {
-      strength: (strength / 4) * 100,
-      label: labels[strength - 1] || '',
-      color: colors[strength - 1] || 'bg-gray-300',
-    };
+  const handleTeamSizeChange = (e) => {
+    const size = parseInt(e.target.value);
+    const teammates = Array(Math.max(0, size - 1)).fill('');
+    setFormData({
+      ...formData,
+      teamSize: size,
+      teammates
+    });
   };
 
-  const passwordStrength = getPasswordStrength(formData.password);
+  const handleTeammateChange = (index, value) => {
+    const newTeammates = [...formData.teammates];
+    newTeammates[index] = value;
+    setFormData({
+      ...formData,
+      teammates: newTeammates
+    });
+  };
+
+  const calculatePrice = () => {
+    if (formData.teamSize === 1) return 299;
+    return formData.teamSize * 250;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowSuccess(true);
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 3000);
+    console.log('Registration:', formData);
+  };
 
   return (
-    <div className="min-h-screen pt-16 pb-16 px-4 flex items-center justify-center relative overflow-hidden">{/* Reduced pt from 24 to 16 since navbar is hidden */}
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-20 w-40 h-40 bg-mystical-blue rounded-full opacity-10 blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-20 w-48 h-48 bg-gold-medium rounded-full opacity-10 blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-mystical-purple rounded-full opacity-5 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
+    <div className="min-h-screen pt-32 pb-16 px-4 bg-page-light">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12 animate-slide-up">
+          <h1 className="text-5xl md:text-6xl font-black mb-4 font-heading text-gray-900">
+            Register Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-treasure-bronze to-treasure-gold">Team</span>
+          </h1>
+          <p className="text-xl text-gray-500">
+            Join the epic treasure hunt adventure
+          </p>
+        </div>
 
-      <div className="max-w-md w-full relative z-10 animate-reveal">
-        {/* Card */}
-        <div className="bg-gradient-to-br from-parchment-light to-parchment-medium p-8 md:p-10 rounded-xl border-3 border-gold-medium shadow-mystical-lg">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-mystical-purple to-mystical-blue rounded-full flex items-center justify-center shadow-mystical animate-mystical-glow">
-                <UserPlus className="text-parchment-light" size={32} />
-              </div>
-            </div>
-            <h1 className="text-4xl md:text-5xl mb-4">Join the Quest</h1>
-            <DecorativeLine />
-            <p className="text-ink-brown mt-4">
-              Create your account and begin your legendary adventure
-            </p>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Username Field */}
-            <div className="relative group">
-              <label htmlFor="username" className="block text-brown-dark font-medievalSharp mb-2">
-                Hunter Name
-              </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brown-medium group-focus-within:text-gold-medium transition-colors">
-                  <User size={20} />
+        {/* Registration Form */}
+        <div className="paper-card p-8 md:p-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Team Information Section */}
+            <div>
+              <h2 className="text-2xl font-bold mb-6 flex items-center space-x-3 text-gray-800 font-heading">
+                <Icons.Team className="w-7 h-7 text-treasure-bronze" />
+                <span>Team Information</span>
+              </h2>
+              
+              <div className="space-y-6">
+                {/* Team Name */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Team Name *
+                  </label>
+                  <input
+                    type="text"
+                    name="teamName"
+                    value={formData.teamName}
+                    onChange={handleChange}
+                    placeholder="The Code Pirates"
+                    className="input-field"
+                    required
+                  />
                 </div>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-12 pr-4 py-3 bg-parchment-dark border-2 border-gold-dark rounded-lg font-cinzel text-ink-black focus:outline-none focus:border-gold-medium focus:shadow-gold-glow transition-all"
-                  placeholder="Sir Galahad"
-                />
-              </div>
-            </div>
 
-            {/* Email Field */}
-            <div className="relative group">
-              <label htmlFor="email" className="block text-brown-dark font-medievalSharp mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brown-medium group-focus-within:text-gold-medium transition-colors">
-                  <Mail size={20} />
+                {/* Team Size */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Team Size (1-6 members) *
+                  </label>
+                  <select
+                    name="teamSize"
+                    value={formData.teamSize}
+                    onChange={handleTeamSizeChange}
+                    className="input-field"
+                    required
+                  >
+                    {[1, 2, 3, 4, 5, 6].map(size => (
+                      <option key={size} value={size}>{size} {size === 1 ? 'Member' : 'Members'}</option>
+                    ))}
+                  </select>
                 </div>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-12 pr-4 py-3 bg-parchment-dark border-2 border-gold-dark rounded-lg font-cinzel text-ink-black focus:outline-none focus:border-gold-medium focus:shadow-gold-glow transition-all"
-                  placeholder="your@email.com"
-                />
               </div>
             </div>
 
-            {/* Password Field */}
-            <div className="relative group">
-              <label htmlFor="password" className="block text-brown-dark font-medievalSharp mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brown-medium group-focus-within:text-gold-medium transition-colors">
-                  <Lock size={20} />
+            {/* Team Leader Section */}
+            <div>
+              <h2 className="text-2xl font-bold mb-6 flex items-center space-x-3 text-gray-800 font-heading">
+                <Icons.User className="w-7 h-7 text-treasure-bronze" />
+                <span>Team Leader Details</span>
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    name="teamLeaderName"
+                    value={formData.teamLeaderName}
+                    onChange={handleChange}
+                    placeholder="Captain Jack"
+                    className="input-field"
+                    required
+                  />
                 </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-12 pr-12 py-3 bg-parchment-dark border-2 border-gold-dark rounded-lg font-cinzel text-ink-black focus:outline-none focus:border-gold-medium focus:shadow-gold-glow transition-all"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-brown-medium hover:text-gold-medium transition-colors"
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    name="teamLeaderEmail"
+                    value={formData.teamLeaderEmail}
+                    onChange={handleChange}
+                    placeholder="captain@treasurehunt.com"
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
-              {/* Password Strength Indicator */}
-              {formData.password && (
-                <div className="mt-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="flex-1 h-2 bg-parchment-dark rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ${passwordStrength.color} transition-all duration-300`}
-                        style={{ width: `${passwordStrength.strength}%` }}
-                      ></div>
+            </div>
+
+            {/* Team Members Section */}
+            {formData.teamSize > 1 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6 flex items-center space-x-3 text-gray-800 font-heading">
+                  <Icons.Users className="w-7 h-7 text-treasure-bronze" />
+                  <span>Team Members ({formData.teamSize - 1})</span>
+                </h2>
+                
+                <div className="space-y-4">
+                  {formData.teammates.map((email, index) => (
+                    <div key={index}>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                        Member {index + 1} Email *
+                      </label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => handleTeammateChange(index, e.target.value)}
+                        placeholder={`member${index + 1}@example.com`}
+                        className="input-field"
+                        required
+                      />
                     </div>
-                    <span className="text-xs font-cinzel text-ink-brown">{passwordStrength.label}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Price Summary */}
+            <div className="bg-treasure-gold/5 rounded-2xl p-6 border border-treasure-gold/20">
+              <h3 className="text-xl font-bold mb-4 flex items-center space-x-3 text-gray-900 font-heading">
+                <Icons.Trophy className="w-6 h-6 text-treasure-gold" />
+                <span>Registration Summary</span>
+              </h3>
+              
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Team Size:</span>
+                  <span className="font-semibold text-gray-900">{formData.teamSize} {formData.teamSize === 1 ? 'Member' : 'Members'}</span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Price per person:</span>
+                  <span className="font-semibold text-gray-900">₹{formData.teamSize === 1 ? 299 : 250}</span>
+                </div>
+                
+                <div className="border-t border-treasure-gold/20 pt-3 mt-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xl font-bold text-gray-900 font-heading">Total Amount:</span>
+                    <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-treasure-bronze to-treasure-gold font-heading">₹{calculatePrice()}</span>
                   </div>
                 </div>
-              )}
-            </div>
 
-            {/* Confirm Password Field */}
-            <div className="relative group">
-              <label htmlFor="confirmPassword" className="block text-brown-dark font-medievalSharp mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brown-medium group-focus-within:text-gold-medium transition-colors">
-                  <Shield size={20} />
-                </div>
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-12 pr-12 py-3 bg-parchment-dark border-2 border-gold-dark rounded-lg font-cinzel text-ink-black focus:outline-none focus:border-gold-medium focus:shadow-gold-glow transition-all"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-brown-medium hover:text-gold-medium transition-colors"
-                >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
+                {formData.teamSize > 1 && (
+                  <div className="bg-green-50 border border-green-200 rounded-xl p-3 mt-3">
+                    <p className="text-sm text-green-700 font-semibold text-center">
+                      💰 Save ₹{(299 - 250) * formData.teamSize} with team registration!
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Terms Checkbox */}
-            <label className="flex items-start gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                name="agreeToTerms"
-                checked={formData.agreeToTerms}
-                onChange={handleChange}
-                required
-                className="mt-1 w-4 h-4 border-2 border-gold-dark rounded accent-gold-medium cursor-pointer"
-              />
-              <span className="text-sm text-ink-brown group-hover:text-brown-dark transition-colors">
-                I agree to the <a href="#" className="text-burgundy hover:text-gold-dark">Terms of Service</a> and <a href="#" className="text-burgundy hover:text-gold-dark">Privacy Policy</a>
-              </span>
-            </label>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full btn-medieval flex items-center justify-center gap-2"
-              disabled={!formData.agreeToTerms}
-            >
-              <Sparkles size={20} />
-              Begin Your Journey
-              <Sparkles size={20} />
-            </button>
+            {/* Submit Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button type="submit" className="btn-primary flex-1 text-lg flex items-center justify-center space-x-2">
+                <Icons.CheckCircle className="w-6 h-6" />
+                <span>Complete Registration</span>
+                <Icons.ArrowRight className="w-5 h-5" />
+              </button>
+              <Link to="/" className="btn-secondary flex-1 text-lg flex items-center justify-center space-x-2">
+                <span>Cancel</span>
+              </Link>
+            </div>
           </form>
+        </div>
 
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t-2 border-gold-dark/30"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-parchment-light text-ink-brown font-cinzel">
-                Already have an account?
-              </span>
-            </div>
+        {/* Info Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="paper-card p-6 text-center">
+            <Icons.Calendar className="w-10 h-10 text-treasure-bronze mx-auto mb-3" />
+            <h3 className="font-bold mb-2 text-gray-900 font-heading">Event Date</h3>
+            <p className="text-gray-500 text-sm">March 15, 2024</p>
           </div>
-
-          {/* Login Link */}
-          <div className="text-center">
-            <Link
-              to="/login"
-              className="inline-block text-burgundy hover:text-gold-dark transition-colors font-medievalSharp text-lg"
-            >
-              Sign In →
-            </Link>
+          
+          <div className="paper-card p-6 text-center">
+            <Icons.Clock className="w-10 h-10 text-treasure-gold mx-auto mb-3" />
+            <h3 className="font-bold mb-2 text-gray-900 font-heading">Duration</h3>
+            <p className="text-gray-500 text-sm">10:00 AM - 6:00 PM</p>
+          </div>
+          
+          <div className="paper-card p-6 text-center">
+            <Icons.Trophy className="w-10 h-10 text-treasure-bronze mx-auto mb-3" />
+            <h3 className="font-bold mb-2 text-gray-900 font-heading">Prize Pool</h3>
+            <p className="text-gray-500 text-sm">₹1,00,000+</p>
           </div>
         </div>
       </div>
+
+      {/* Success Message */}
+      {showSuccess && (
+        <div className="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up">
+          <div className="paper-card px-8 py-4 shadow-gold flex items-center space-x-3 border-l-4 border-treasure-gold">
+            <Icons.CheckCircle className="w-6 h-6 text-treasure-gold" />
+            <span className="font-bold text-lg text-gray-900">Registration Successful! Check your email.</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

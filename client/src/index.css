@@ -1,268 +1,104 @@
-/* Medieval Treasure Hunt - Global Styles */
-
-/* Import Medieval Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=UnifrakturMaguntia&family=MedievalSharp&family=Pirata+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Pirata+One&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* CSS Variables */
 :root {
-    --shadow-soft: rgba(58, 38, 24, 0.2);
-    --shadow-medium: rgba(58, 38, 24, 0.4);
-    --shadow-hard: rgba(58, 38, 24, 0.6);
-    --glow-gold: rgba(212, 175, 55, 0.5);
-    --glow-torch: rgba(255, 140, 0, 0.4);
+    --bg-light: #fdfbf7;
+    --bg-dark: #f4f1ea;
+    --primary: #0ea5e9;
+    --primary-dark: #0369a1;
+    --gold: #d4af37;
+    --gold-light: #f4d03f;
+    --text-main: #2d3436;
+    --text-muted: #636e72;
 }
 
 @layer base {
-    * {
-        @apply m-0 p-0 box-border;
-    }
-
     body {
-        @apply font-cinzel bg-gradient-to-br from-parchment-medium via-parchment-light to-parchment-dark text-ink-black leading-relaxed overflow-x-hidden;
-        position: relative;
-    }
-
-    /* Parchment Texture Overlay */
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        @apply text-gray-800 antialiased;
+        font-family: theme('fontFamily.body');
+        background-color: var(--bg-light);
         background-image:
-            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(58, 38, 24, 0.03) 2px, rgba(58, 38, 24, 0.03) 4px),
-            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(58, 38, 24, 0.03) 2px, rgba(58, 38, 24, 0.03) 4px);
-        pointer-events: none;
-        z-index: 1;
-        opacity: 0.5;
+            radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 20%),
+            radial-gradient(circle at 0% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 20%),
+            url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zzM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
 
     h1,
     h2,
-    h3 {
-        @apply font-medieval text-brown-dark tracking-wider;
-        text-shadow: 2px 2px 4px var(--shadow-soft);
-    }
-
-    h1 {
-        @apply text-6xl md:text-7xl lg:text-8xl leading-tight mb-4;
-    }
-
-    h2 {
-        @apply text-4xl md:text-5xl mb-6;
-    }
-
-    h3 {
-        @apply text-2xl md:text-3xl mb-4;
-    }
-
-    p {
-        @apply font-cinzel text-lg text-ink-brown mb-4;
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply text-gray-900;
+        font-family: theme('fontFamily.heading');
     }
 }
 
 @layer components {
-
-    /* Floating Particles */
-    .particle {
-        @apply absolute w-1 h-1 bg-gold-medium rounded-full pointer-events-none;
-        animation: float 6s infinite ease-in-out;
+    .btn-primary {
+        @apply relative overflow-hidden bg-gradient-to-r from-treasure-bronze to-treasure-gold text-white font-heading font-bold py-3 px-8 rounded-xl shadow-gold hover:shadow-lg hover:scale-105 transition-all duration-300 active:scale-95;
     }
 
-    /* Decorative Line */
-    .decorative-line {
-        @apply w-64 md:w-80 h-1 mx-auto my-8 relative;
-        background: linear-gradient(90deg, transparent, theme('colors.gold.medium'), transparent);
+    .btn-secondary {
+        @apply relative overflow-hidden bg-white border-2 border-treasure-gold/30 text-treasure-bronze font-heading font-bold py-3 px-8 rounded-xl hover:bg-page-dark hover:border-treasure-gold transition-all duration-300;
     }
 
-    .decorative-line::before,
-    .decorative-line::after {
-        content: '◆';
-        @apply absolute top-1/2 -translate-y-1/2 text-gold-medium text-xl;
+    .paper-card {
+        @apply bg-paper backdrop-blur-sm border border-stone-200 rounded-2xl shadow-card hover:shadow-floating transition-all duration-500 ease-out;
     }
 
-    .decorative-line::before {
-        left: -20px;
+    .input-field {
+        @apply w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:border-treasure-gold focus:ring-2 focus:ring-treasure-gold/20 outline-none transition-all duration-300 text-gray-700 placeholder-gray-400;
     }
 
-    .decorative-line::after {
-        right: -20px;
+    .glass-panel {
+        @apply bg-white/80 backdrop-blur-md border border-white/50 shadow-soft rounded-3xl;
     }
 
-    /* Medieval Button */
-    .btn-medieval {
-        @apply font-medievalSharp px-8 py-4 text-xl border-3 border-gold-medium bg-gradient-to-br from-brown-dark to-brown-medium text-gold-light cursor-pointer relative overflow-hidden inline-block transition-all duration-300 uppercase tracking-wider;
-        box-shadow:
-            0 4px 15px var(--shadow-medium),
-            inset 0 0 20px rgba(212, 175, 55, 0.1);
-    }
-
-    .btn-medieval::before {
-        content: '';
-        @apply absolute top-1/2 left-1/2 w-0 h-0 rounded-full opacity-30;
-        background: radial-gradient(circle, theme('colors.gold.medium') 0%, transparent 70%);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
-    .btn-medieval:hover::before {
-        @apply w-80 h-80;
-    }
-
-    .btn-medieval:hover {
-        @apply -translate-y-1 scale-105 border-gold-light;
-        box-shadow:
-            0 8px 25px var(--shadow-hard),
-            0 0 30px var(--glow-gold);
-    }
-
-    .btn-medieval:active {
-        @apply -translate-y-0.5 scale-105;
-    }
-
-    /* Feature Card */
-    .feature-card {
-        @apply bg-gradient-to-br from-parchment-light to-parchment-medium p-10 border-2 border-gold-dark rounded-lg relative transition-all duration-300 overflow-hidden;
-        box-shadow:
-            0 8px 20px var(--shadow-soft),
-            inset 0 0 30px rgba(212, 175, 55, 0.1);
-    }
-
-    .feature-card::before {
-        content: '';
-        @apply absolute -top-0.5 -left-0.5 -right-0.5 -bottom-0.5 rounded-lg opacity-0 transition-opacity duration-300;
-        background: linear-gradient(45deg, theme('colors.gold.medium'), theme('colors.gold.light'), theme('colors.gold.medium'));
-        z-index: -1;
-    }
-
-    .feature-card:hover::before {
-        @apply opacity-100;
-    }
-
-    .feature-card:hover {
-        @apply -translate-y-3 rotate-1;
-        box-shadow:
-            0 15px 40px var(--shadow-medium),
-            0 0 40px var(--glow-gold);
-    }
-
-    .feature-icon {
-        @apply text-6xl mb-6 block;
-        filter: drop-shadow(2px 2px 4px var(--shadow-soft));
-        animation: bounce 2s infinite;
-    }
-
-    .feature-card:hover .feature-icon {
-        animation: spin 0.6s ease-in-out;
-    }
-
-    /* Navigation */
     .nav-link {
-        @apply font-medievalSharp text-parchment-light no-underline text-lg relative transition-all duration-300 px-4 py-2;
+        @apply font-heading font-semibold text-gray-600 hover:text-treasure-bronze transition-colors duration-200 relative;
     }
 
-    .nav-link::before {
-        content: '⚔';
-        @apply absolute opacity-0 transition-all duration-300;
-        left: -10px;
+    .nav-link::after {
+        content: '';
+        @apply absolute bottom-0 left-0 w-0 h-0.5 bg-treasure-bronze transition-all duration-300;
     }
 
-    .nav-link:hover {
-        @apply text-gold-light -translate-y-1;
-    }
-
-    .nav-link:hover::before {
-        @apply opacity-100;
-        left: -20px;
-    }
-
-    /* Story Content */
-    .story-content {
-        @apply bg-parchment-light p-16 border-3 border-brown-medium rounded-xl relative;
-        box-shadow:
-            0 10px 30px var(--shadow-medium),
-            inset 0 0 50px rgba(58, 38, 24, 0.05);
-    }
-
-    .story-content::before,
-    .story-content::after {
-        content: '🗡️';
-        @apply absolute text-4xl opacity-30;
-    }
-
-    .story-content::before {
-        @apply top-5 left-5;
-        transform: rotate(-45deg);
-    }
-
-    .story-content::after {
-        @apply bottom-5 right-5;
-        transform: rotate(135deg);
+    .nav-link:hover::after {
+        @apply w-full;
     }
 }
 
-@layer utilities {
-    .text-shadow-medieval {
-        text-shadow: 2px 2px 4px var(--shadow-soft);
-    }
-
-    .text-shadow-gold {
-        text-shadow:
-            3px 3px 0 theme('colors.gold.dark'),
-            6px 6px 12px var(--shadow-medium);
-    }
-
-    .border-3 {
-        border-width: 3px;
-    }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-/* Smooth Scrolling */
-html {
-    scroll-behavior: smooth;
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .story-content {
-        @apply p-10;
-    }
+::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 4px;
 }
 
-/* Leaflet map styles */
-.leaflet-container {
-    font-family: 'Cinzel', serif;
+::-webkit-scrollbar-thumb:hover {
+    background: #b45309;
 }
 
-.leaflet-popup-content-wrapper {
-    background: linear-gradient(to bottom right, #f4e8d0, #e8d7b8);
-    border: 2px solid #d4af37;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(58, 38, 24, 0.4);
+/* Animations */
+.animate-float-slow {
+    animation: float 8s ease-in-out infinite;
 }
 
-.leaflet-popup-tip {
-    background: #f4e8d0;
-    border: 2px solid #d4af37;
+.animate-float-medium {
+    animation: float 6s ease-in-out infinite;
 }
 
-.custom-marker {
-    animation: markerPulse 2s infinite;
-}
-
-@keyframes markerPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
+.animate-float-fast {
+    animation: float 4s ease-in-out infinite;
 }
