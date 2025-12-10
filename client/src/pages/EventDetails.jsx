@@ -1,9 +1,38 @@
 import React from 'react';
 import { eventDetails, faqs } from '../data/mockData';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Icons from '../components/Icons';
+import { useAuth } from '../context/AuthContext';
 
 const EventDetails = () => {
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    
+    if (!user) {
+      navigate('/login', { state: { from: '/register' } });
+      return;
+    }
+
+    // Check if profile is fully complete (including full_name and email)
+    const isProfileComplete = profile && 
+      profile.full_name && 
+      profile.email && 
+      profile.phone && 
+      profile.college_name && 
+      profile.branch_name && 
+      profile.year_of_study && 
+      profile.role;
+
+    if (!isProfileComplete) {
+      navigate('/complete-profile', { state: { from: '/register' } });
+    } else {
+      navigate('/register');
+    }
+  };
+
   return (
     <div className="min-h-screen pt-32 pb-16 px-4 relative bg-page-light">
       {/* Background decoration */}
@@ -165,10 +194,10 @@ const EventDetails = () => {
               Don't miss out on this epic treasure hunt experience!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register" className="bg-white text-primary-900 font-heading font-bold py-3 px-8 rounded-xl hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 text-lg">
+              <button onClick={handleRegister} className="bg-white text-primary-900 font-heading font-bold py-3 px-8 rounded-xl hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 text-lg">
                   <span>Register Now</span>
                   <Icons.ArrowRight className="w-5 h-5" />
-              </Link>
+              </button>
               <Link to="/timeline" className="bg-primary-800/50 backdrop-blur-md border border-white/20 text-white font-heading font-bold py-3 px-8 rounded-xl hover:bg-primary-800/70 transition-all duration-300 flex items-center justify-center space-x-2 text-lg">
                   <Icons.Calendar className="w-5 h-5" />
                   <span>View Timeline</span>

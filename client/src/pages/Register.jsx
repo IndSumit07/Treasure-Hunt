@@ -1,9 +1,136 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Icons from '../components/Icons';
 import showToast from '../utils/toast';
+import { useAuth } from '../context/AuthContext';
+import supabase from '../lib/Supabase';
 
 const Register = () => {
+  const { user, profile, fetchProfile, loading: authLoading } = useAuth(); // rename loading to avoid conflict if any, though none here
+  const navigate = useNavigate();
+  
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileFormData, setProfileFormData] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    college_name: '',
+    branch_name: '',
+    year_of_study: ''
+  });
+
+  // Pre-fill profile form if data exists
+  React.useEffect(() => {
+    if (user) {
+      setProfileFormData(prev => ({
+        ...prev,
+        full_name: profile?.full_name || user.user_metadata?.full_name || '',
+        email: profile?.email || user.email || '',
+        phone: profile?.phone || '',
+        college_name: profile?.college_name || '',
+        branch_name: profile?.branch_name || '',
+        year_of_study: profile?.year_of_study || ''
+      }));
+    }
+  }, [user, profile]);
+
+  // Track if profile has been saved in this session
+  const [profileSaved, setProfileSaved] = React.useState(false);
+
+  const isProfileComplete = profile && 
+        profile.full_name && profile.full_name.trim() !== '' &&
+        profile.email && profile.email.trim() !== '' &&
+        profile.phone && 
+        profile.college_name && 
+        profile.branch_name && 
+        profile.year_of_study;
+
+  // Determine what to show: Always show profile form first, then registration after save
+  const showRegistrationForm = profileSaved || isProfileComplete;
+
+  // Enforce login
+  React.useEffect(() => {
+    if (!authLoading && !user) {
+       navigate('/login', { state: { from: '/register' } });
+    }
+  }, [user, authLoading, navigate]);
+
+  const handleProfileChange = (e) => {
+    setProfileFormData({
+      ...profileFormData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    setProfileLoading(true);
+    const loadingToast = showToast.loading('Updating your profile...');
+
+    try {
+      console.log('Updating profile with data:', profileFormData);
+      console.log('User ID:', user.id);
+
+      const profileData = {
+        user_id: user.id,
+        full_name: profileFormData.full_name,
+        email: profileFormData.email,
+        phone: profileFormData.phone,
+        college_name: profileFormData.college_name,
+        branch_name: profileFormData.branch_name,
+        year_of_study: profileFormData.year_of_study
+      };
+
+      // Check if profile exists
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      let data, error;
+
+      if (existingProfile) {
+        // Update existing profile
+        console.log('Updating existing profile...');
+        const result = await supabase
+          .from('profiles')
+          .update(profileData)
+          .eq('user_id', user.id)
+          .select();
+        data = result.data;
+        error = result.error;
+      } else {
+        // Insert new profile
+        console.log('Inserting new profile...');
+        const result = await supabase
+          .from('profiles')
+          .insert([profileData])
+          .select();
+        data = result.data;
+        error = result.error;
+      }
+
+      console.log('Operation response:', { data, error });
+
+      if (error) throw error;
+      
+      await fetchProfile(user.id);
+
+      showToast.dismiss(loadingToast);
+      showToast.success('Profile updated successfully!');
+      
+      // Mark profile as saved to show registration form
+      setProfileSaved(true);
+    } catch (error) {
+      console.error('Profile update error:', error);
+      showToast.dismiss(loadingToast);
+      showToast.error(error.message);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+
   const [formData, setFormData] = useState({
     teamName: '',
     teamLeaderName: '',
@@ -11,6 +138,17 @@ const Register = () => {
     teamSize: 1,
     teammates: []
   });
+
+  // Pre-fill registration form with user details
+  React.useEffect(() => {
+    if (user || profile) {
+      setFormData(prev => ({
+        ...prev,
+        teamLeaderName: profile?.full_name || '',
+        teamLeaderEmail: user?.email || '',
+      }));
+    }
+  }, [user, profile]);
 
   // Removed showSuccess state
 
@@ -64,8 +202,144 @@ const Register = () => {
           </p>
         </div>
 
-        {/* Registration Form */}
+        {/* Forms Container */}
         <div className="paper-card p-8 md:p-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          
+          {/* Profile Completion Form (Show if profile not saved yet) */}
+          {!authLoading && !showRegistrationForm && (
+            <div>
+              <div className="mb-8 border-b border-gray-100 pb-6">
+                 <h2 className="text-2xl font-bold mb-2 flex items-center space-x-3 text-gray-800 font-heading">
+                  <Icons.User className="w-7 h-7 text-treasure-bronze" />
+                  <span>Complete Your Profile</span>
+                </h2>
+                <p className="text-gray-500">We need a few more details before you can register your team.</p>
+              </div>
+
+              <form onSubmit={handleProfileSubmit} className="space-y-5">
+                 {/* Phone Input */}
+                 <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Icons.Phone className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={profileFormData.phone}
+                      onChange={handleProfileChange}
+                      placeholder="+91 99999 99999"
+                      className="input-field pl-14"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* College Name */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    College Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Icons.Building className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      name="college_name"
+                      value={profileFormData.college_name}
+                      onChange={handleProfileChange}
+                      placeholder="Imperial Academy of Mines"
+                      className="input-field pl-14"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Branch Name */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Branch
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Icons.Book className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      name="branch_name"
+                      value={profileFormData.branch_name}
+                      onChange={handleProfileChange}
+                      placeholder="Computer Science"
+                      className="input-field pl-14"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Year of Study */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Year of Study
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Icons.Calendar className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      name="year_of_study"
+                      value={profileFormData.year_of_study}
+                      onChange={handleProfileChange}
+                      placeholder="Third Year"
+                      className="input-field pl-14"
+                      required
+                    />
+                  </div>
+                </div>
+
+                 {/* Role */}
+                 <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
+                    Role
+                  </label>
+                  <div className="relative">
+                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Icons.Briefcase className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <select
+                      name="role"
+                      value={profileFormData.role}
+                      onChange={handleProfileChange}
+                      className="input-field pl-14 appearance-none"
+                    >
+                      <option value="student">Student</option>
+                      <option value="faculty">Faculty</option>
+                      <option value="alumni">Alumni</option>
+                    </select>
+                     <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                      <Icons.ChevronDown className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </div>
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={profileLoading}
+                  className="btn-primary w-full text-lg flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  <span>{profileLoading ? 'Saving...' : 'Continue to Registration'}</span>
+                  {!profileLoading && <Icons.ArrowRight className="w-5 h-5" />}
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* Registration Form (Show only after profile is saved) */}
+          {!authLoading && showRegistrationForm && (
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Team Information Section */}
             <div>
@@ -218,6 +492,7 @@ const Register = () => {
               </Link>
             </div>
           </form>
+          )}
         </div>
 
         {/* Info Cards */}

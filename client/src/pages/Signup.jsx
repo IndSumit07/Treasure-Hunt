@@ -56,12 +56,18 @@ const Signup = () => {
     }
     const loadingToast = showToast.loading('Creating your account...');
     try {
-      const { error } = await signUp(formData.email, formData.password, { full_name: formData.name });
+      // We still pass full_name so it gets into the initial profile
+      const metaData = {
+        full_name: formData.name,
+      };
+
+      const { error } = await signUp(formData.email, formData.password, metaData);
       showToast.dismiss(loadingToast);
       
       if (error) throw error;
-      showToast.success('Signup successful! Please check your email for verification.');
-      navigate('/login');
+      showToast.success('Signup successful! Please complete your profile.');
+      // Redirect to the profile completion page
+      navigate('/complete-profile');
     } catch (error) {
       showToast.dismiss(loadingToast);
       showToast.error(error.message);
@@ -97,7 +103,6 @@ const Signup = () => {
             <p className="text-gray-500">Create your account to get started</p>
           </div>
 
-          {/* Signup Form */}
           {!showForm ? (
             <div className="space-y-4">
                {/* Social Signup */}

@@ -188,6 +188,29 @@ export const Icons = {
       <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
     </svg>
   ),
+  Phone: ({ className = "w-6 h-6", ...props }) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" {...props}>
+      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 .96 0 1.94.13 3.57.24 1.12.12.35.37.75.24 1.02l-2.2 2.2z"/>
+    </svg>
+  ),
+
+  Building: ({ className = "w-6 h-6", ...props }) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" {...props}>
+      <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+    </svg>
+  ),
+
+  Book: ({ className = "w-6 h-6", ...props }) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" {...props}>
+      <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+    </svg>
+  ),
+
+  Briefcase: ({ className = "w-6 h-6", ...props }) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" {...props}>
+      <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"/>
+    </svg>
+  ),
 };
 
 export default Icons;

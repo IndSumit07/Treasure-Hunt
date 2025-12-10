@@ -10,6 +10,7 @@ import EventDetails from './pages/EventDetails';
 import Timeline from './pages/Timeline';
 import Map from './pages/Map';
 import Dashboard from './pages/Dashboard';
+import CompleteProfile from './pages/CompleteProfile';
 
 import { AuthProvider } from './context/AuthContext';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/map" element={<Map />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/complete-profile" element={<CompleteProfile />} />
         </Routes>
       </div>
     </Router>
