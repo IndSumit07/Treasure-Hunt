@@ -16,15 +16,14 @@ const EventDetails = () => {
       return;
     }
 
-    // Check if profile is fully complete (including full_name and email)
+    // Check if profile is fully complete (all fields filled, no nulls)
     const isProfileComplete = profile && 
-      profile.full_name && 
-      profile.email && 
-      profile.phone && 
-      profile.college_name && 
-      profile.branch_name && 
-      profile.year_of_study && 
-      profile.role;
+      profile.full_name && profile.full_name.trim() !== '' &&
+      profile.email && profile.email.trim() !== '' &&
+      profile.phone && profile.phone.trim() !== '' &&
+      profile.college_name && profile.college_name.trim() !== '' &&
+      profile.branch_name && profile.branch_name.trim() !== '' &&
+      profile.year_of_study && profile.year_of_study.trim() !== '';
 
     if (!isProfileComplete) {
       navigate('/complete-profile', { state: { from: '/register' } });

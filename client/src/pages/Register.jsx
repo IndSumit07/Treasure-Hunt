@@ -301,31 +301,6 @@ const Register = () => {
                   </div>
                 </div>
 
-                 {/* Role */}
-                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-heading">
-                    Role
-                  </label>
-                  <div className="relative">
-                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <Icons.Briefcase className="w-5 h-5 text-gray-400" />
-                    </div>
-                    <select
-                      name="role"
-                      value={profileFormData.role}
-                      onChange={handleProfileChange}
-                      className="input-field pl-14 appearance-none"
-                    >
-                      <option value="student">Student</option>
-                      <option value="faculty">Faculty</option>
-                      <option value="alumni">Alumni</option>
-                    </select>
-                     <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                      <Icons.ChevronDown className="w-4 h-4 text-gray-400" />
-                    </div>
-                  </div>
-                </div>
-
                 <button 
                   type="submit" 
                   disabled={profileLoading}

@@ -6,7 +6,7 @@ import Icons from '../components/Icons';
 import supabase from '../lib/Supabase';
 
 const CompleteProfile = () => {
-  const { user, fetchProfile, profile } = useAuth(); // Destructure profile
+  const { user, fetchProfile, profile, loading: authLoading } = useAuth(); // Add authLoading
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -116,6 +116,36 @@ const CompleteProfile = () => {
     } finally {
       setLoading(false);
     }
+  }
+
+  // Check if profile is complete (all fields filled)
+  const isProfileComplete = profile && 
+    profile.full_name && profile.full_name.trim() !== '' &&
+    profile.email && profile.email.trim() !== '' &&
+    profile.phone && profile.phone.trim() !== '' &&
+    profile.college_name && profile.college_name.trim() !== '' &&
+    profile.branch_name && profile.branch_name.trim() !== '' &&
+    profile.year_of_study && profile.year_of_study.trim() !== '';
+
+  // If profile is complete, redirect to intended destination
+  React.useEffect(() => {
+    if (!authLoading && isProfileComplete) {
+      const from = location.state?.from || '/';
+      navigate(from);
+    }
+  }, [isProfileComplete, authLoading, navigate, location]);
+
+  // Don't render form if profile is complete
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
+      </div>
+    );
+  }
+
+  if (isProfileComplete) {
+    return null; // Will redirect via useEffect
   };
 
   return (
